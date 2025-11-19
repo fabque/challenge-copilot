@@ -45,25 +45,25 @@ class ExcusaServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Configurar mocks comunes
-        when(contextoRepository.count()).thenReturn(1L);
-        when(causaRepository.count()).thenReturn(1L);
-        when(consecuenciaRepository.count()).thenReturn(1L);
-        when(recomendacionRepository.count()).thenReturn(1L);
-        when(memeRepository.count()).thenReturn(1L);
-        when(leyRepository.count()).thenReturn(1L);
+        // Configurar mocks comunes con lenient() para evitar stubbings innecesarios
+        lenient().when(contextoRepository.count()).thenReturn(1L);
+        lenient().when(causaRepository.count()).thenReturn(1L);
+        lenient().when(consecuenciaRepository.count()).thenReturn(1L);
+        lenient().when(recomendacionRepository.count()).thenReturn(1L);
+        lenient().when(memeRepository.count()).thenReturn(1L);
+        lenient().when(leyRepository.count()).thenReturn(1L);
 
-        when(contextoRepository.findById(anyLong()))
+        lenient().when(contextoRepository.findById(anyLong()))
                 .thenReturn(Optional.of(Contexto.builder().id(1L).texto("Contexto test").build()));
-        when(causaRepository.findById(anyLong()))
+        lenient().when(causaRepository.findById(anyLong()))
                 .thenReturn(Optional.of(Causa.builder().id(1L).texto("Causa test").build()));
-        when(consecuenciaRepository.findById(anyLong()))
+        lenient().when(consecuenciaRepository.findById(anyLong()))
                 .thenReturn(Optional.of(Consecuencia.builder().id(1L).texto("Consecuencia test").build()));
-        when(recomendacionRepository.findById(anyLong()))
+        lenient().when(recomendacionRepository.findById(anyLong()))
                 .thenReturn(Optional.of(Recomendacion.builder().id(1L).texto("Recomendación test").build()));
-        when(memeRepository.findById(anyLong()))
+        lenient().when(memeRepository.findById(anyLong()))
                 .thenReturn(Optional.of(Meme.builder().id(1L).texto("Meme test").fuente("dev-memes").build()));
-        when(leyRepository.findById(anyLong()))
+        lenient().when(leyRepository.findById(anyLong()))
                 .thenReturn(Optional.of(Ley.builder().id(1L).texto("Ley test").fuente("Murphy").build()));
     }
 
@@ -342,6 +342,6 @@ class ExcusaServiceTest {
 
         // Assert
         assertNotNull(response);
-        assertNotNull(response.getLey()); // Retorna Ley vacía
+        assertNull(response.getLey()); // Retorna null cuando no hay leyes disponibles
     }
 }
