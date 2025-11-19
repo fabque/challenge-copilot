@@ -193,12 +193,52 @@ Puedes hacer click en cualquier endpoint y ver:
 - **Parameters**: Documentación de argumentos
 - **Responses**: Esquemas de respuesta posibles
 
+## 🐳 Docker
+
+Se ha implementado soporte completo para Docker:
+
+### Ejecución con Docker Compose (Recomendado)
+```bash
+# Construir e iniciar
+docker-compose up --build
+
+# Detener
+docker-compose down
+```
+
+### Ejecución con Docker Manual
+```bash
+# Construir imagen
+docker build -t excusas-api:1.0.0 .
+
+# Ejecutar
+docker run -p 8080:8080 excusas-api:1.0.0
+```
+
+### Características de la Imagen
+- ✅ Multi-stage build (optimizado a ~200-300 MB)
+- ✅ Alpine JRE 21 (tamaño mínimo)
+- ✅ Health check incluido
+- ✅ Reinicio automático
+- ✅ Variables de entorno personalizables
+
+### Acceder a la API en Docker
+```bash
+# Una vez que el contenedor está corriendo
+curl http://localhost:8080/api/excusas/ultra-shark
+
+# O abrir Swagger UI
+# http://localhost:8080/swagger-ui.html
+```
+
+**Ver `DOCKER.md` para más detalles y troubleshooting.**
+
 ## 🚦 Próximos Pasos (Opcionales)
 
 - [x] Agregar tests unitarios (JUnit 5 + Mockito) ✅
 - [x] Tests de integración (RestAssured) ✅
 - [x] Swagger/OpenAPI documentation ✅
-- [ ] Docker container
+- [x] Docker container ✅
 - [ ] PlantUML diagrams (clases, secuencia, deployment)
 - [ ] SonarQube análisis
 - [ ] Conventional commits en el historial

@@ -1,0 +1,182 @@
+@startuml Excusas_Tech_API_Components
+!theme plain
+skinparam backgroundColor #F9F9F9
+skinparam componentBackgroundColor #E1F5FF
+skinparam componentBorderColor #01579B
+skinparam arrowColor #01579B
+skinparam databaseBackgroundColor #FFE0B2
+skinparam databaseBorderColor #E65100
+
+title Excusas Tech API - Component Architecture (Hexagonal)
+
+package "External Layer (HTTP)" {
+    component "REST API" as restapi {
+        portin http_in
+    }
+}
+
+package "Adapter Layer (Controllers)" {
+    component "ExcusaController" as excusactrl
+    component "ContextoController" as contextoctl
+    component "CausaController" as causactrl
+    component "ConsecuenciaController" as consectrl
+    component "RecomendacionController" as recomctrl
+    component "MemeController" as memectrl
+    component "LeyController" as leyctrl
+}
+
+package "DTO Layer (Data Transfer)" {
+    component "Request DTOs" as requestdtos {
+        portin request_in
+    }
+    component "Response DTOs" as responsedtos {
+        portout response_out
+    }
+}
+
+package "Business Logic (Domain)" {
+    component "ExcusaService" as service {
+        portout service_logic
+    }
+}
+
+package "Mapper Layer (Transformation)" {
+    component "ContextoMapper" as contextomapper
+    component "CausaMapper" as causamapper
+    component "ConsecuenciaMapper" as consecmapper
+    component "RecomendacionMapper" as recommapper
+    component "MemeMapper" as mememapper
+    component "LeyMapper" as leymapper
+}
+
+package "Data Access Layer (Repository)" {
+    component "ContextoRepository" as contextorepository
+    component "CausaRepository" as causarepository
+    component "ConsecuenciaRepository" as consecrepository
+    component "RecomendacionRepository" as recomrepository
+    component "MemeRepository" as memerepository
+    component "LeyRepository" as leyrepository
+    portout database_out
+}
+
+package "Configuration Layer" {
+    component "SwaggerConfig" as swaggerconfig
+    component "DataLoader" as dataloader
+    component "AppConfig" as appconfig
+}
+
+database "H2 Database (In-Memory)" as h2db {
+    table "Contexto" as ctx_table
+    table "Causa" as cause_table
+    table "Consecuencia" as cons_table
+    table "Recomendacion" as recom_table
+    table "Meme" as meme_table
+    table "Ley" as ley_table
+}
+
+package "External Resources" {
+    component "JSON Data Files" as jsondata {
+        artifact "murphy.json"
+        artifact "hofstadter.json"
+        artifact "dilbert.json"
+        artifact "devops_principles.json"
+        artifact "dev_axioms.json"
+        artifact "dev-memes.json"
+        artifact "argento-memes.json"
+    }
+}
+
+' HTTP Layer Connections
+http_in --> excusactrl
+http_in --> contextoctl
+http_in --> causactrl
+http_in --> consectrl
+http_in --> recomctrl
+http_in --> memectrl
+http_in --> leyctrl
+
+' Controllers to DTOs
+excusactrl --> requestdtos
+contextoctl --> requestdtos
+causactrl --> requestdtos
+consectrl --> requestdtos
+recomctrl --> requestdtos
+memectrl --> requestdtos
+leyctrl --> requestdtos
+
+' DTOs to Service
+requestdtos --> service
+service --> responsedtos
+
+' Service to Mappers
+service --> contextomapper
+service --> causamapper
+service --> consecmapper
+service --> recommapper
+service --> mememapper
+service --> leymapper
+
+' Mappers to Repository
+contextomapper --> contextorepository
+causamapper --> causarepository
+consecmapper --> consecrepository
+recommapper --> recomrepository
+mememapper --> memerepository
+leymapper --> leyrepository
+
+' Repository to Database
+contextorepository --> database_out
+causarepository --> database_out
+consecrepository --> database_out
+recomrepository --> database_out
+memerepository --> database_out
+leyrepository --> database_out
+
+database_out --> h2db
+
+' Database Tables
+h2db --> ctx_table
+h2db --> cause_table
+h2db --> cons_table
+h2db --> recom_table
+h2db --> meme_table
+h2db --> ley_table
+
+' Configuration connections
+swaggerconfig -.-> excusactrl: OpenAPI metadata
+dataloader --> jsondata: cargar datos
+dataloader --> contextorepository: pre-populate
+dataloader --> causarepository: pre-populate
+dataloader --> consecrepository: pre-populate
+dataloader --> recomrepository: pre-populate
+dataloader --> memerepository: pre-populate
+dataloader --> leyrepository: pre-populate
+appconfig -.-> service: ObjectMapper bean
+
+' Response Layer
+responsedtos --> response_out
+
+note right of service
+  **Domain Logic (Hexagon Center)**
+  - generarExcusaSimple()
+  - generarExcusaConMeme()
+  - generarExcusaConLey()
+  - generarExcusaUltraShark()
+  - generarExcusaPorRol()
+  - CRUD operations
+end note
+
+note right of dataloader
+  **Data Initialization**
+  Auto-loads JSON files
+  on application startup
+  Creates sample data
+end note
+
+note bottom of h2db
+  **Persistent Storage**
+  In-memory database
+  with DDL auto-create
+end note
+
+@enduml

@@ -1,0 +1,369 @@
+@startuml Excusas_Tech_API_Classes
+!theme plain
+skinparam backgroundColor #F9F9F9
+skinparam classBackgroundColor #E1F5FF
+skinparam classBorderColor #01579B
+skinparam arrowColor #01579B
+skinparam noteBackgroundColor #FFF9C4
+skinparam noteBorderColor #F57C00
+
+package "com.accenture.excusas.controller" {
+    class ExcusaController {
+        - excusaService: ExcusaService
+        + generarExcusaSimple(): ResponseEntity
+        + generarExcusaConMeme(): ResponseEntity
+        + generarExcusaConLey(): ResponseEntity
+        + generarExcusaUltraShark(): ResponseEntity
+        + generarExcusaPorRol(rol: String): ResponseEntity
+    }
+
+    class ContextoController {
+        - excusaService: ExcusaService
+        + crear(dto: ContextoRequestDTO): ResponseEntity
+    }
+
+    class CausaController {
+        - excusaService: ExcusaService
+        + crear(dto: CausaRequestDTO): ResponseEntity
+    }
+
+    class ConsecuenciaController {
+        - excusaService: ExcusaService
+        + crear(dto: ConsecuenciaRequestDTO): ResponseEntity
+    }
+
+    class RecomendacionController {
+        - excusaService: ExcusaService
+        + crear(dto: RecomendacionRequestDTO): ResponseEntity
+    }
+
+    class MemeController {
+        - excusaService: ExcusaService
+        + crear(dto: MemeRequestDTO): ResponseEntity
+    }
+
+    class LeyController {
+        - excusaService: ExcusaService
+        + crear(dto: LeyRequestDTO): ResponseEntity
+    }
+}
+
+package "com.accenture.excusas.dto" {
+    class ExcusaResponseDTO {
+        - contexto: String
+        - causa: String
+        - consecuencia: String
+        - recomendacion: String
+        - meme: String
+        - ley: String
+        - fuente: String
+        - timestamp: Long
+        - modo: String
+    }
+
+    class ContextoRequestDTO {
+        - texto: String
+        - role: String
+        - tags: String
+    }
+
+    class ContextoResponseDTO {
+        - id: Long
+        - texto: String
+        - role: String
+        - tags: String
+    }
+
+    class CausaRequestDTO {
+        - texto: String
+    }
+
+    class CausaResponseDTO {
+        - id: Long
+        - texto: String
+    }
+
+    class ConsecuenciaRequestDTO {
+        - texto: String
+    }
+
+    class ConsecuenciaResponseDTO {
+        - id: Long
+        - texto: String
+    }
+
+    class RecomendacionRequestDTO {
+        - texto: String
+    }
+
+    class RecomendacionResponseDTO {
+        - id: Long
+        - texto: String
+    }
+
+    class MemeRequestDTO {
+        - texto: String
+        - fuente: String
+        - tags: String
+    }
+
+    class MemeResponseDTO {
+        - id: Long
+        - texto: String
+        - fuente: String
+        - tags: String
+    }
+
+    class LeyRequestDTO {
+        - texto: String
+        - fuente: String
+        - role: String
+        - tags: String
+    }
+
+    class LeyResponseDTO {
+        - id: Long
+        - texto: String
+        - fuente: String
+        - role: String
+        - tags: String
+    }
+}
+
+package "com.accenture.excusas.model" {
+    class Contexto {
+        - id: Long
+        - texto: String
+        - role: String
+        - tags: String
+    }
+
+    class Causa {
+        - id: Long
+        - texto: String
+    }
+
+    class Consecuencia {
+        - id: Long
+        - texto: String
+    }
+
+    class Recomendacion {
+        - id: Long
+        - texto: String
+    }
+
+    class Meme {
+        - id: Long
+        - texto: String
+        - fuente: String
+        - tags: String
+    }
+
+    class Ley {
+        - id: Long
+        - texto: String
+        - fuente: String
+        - role: String
+        - tags: String
+    }
+}
+
+package "com.accenture.excusas.repository" {
+    interface ContextoRepository {
+        + findAll(): List
+        + findById(id: Long): Optional
+        + save(entity: Contexto): Contexto
+    }
+
+    interface CausaRepository {
+        + findAll(): List
+        + findById(id: Long): Optional
+        + save(entity: Causa): Causa
+    }
+
+    interface ConsecuenciaRepository {
+        + findAll(): List
+        + findById(id: Long): Optional
+        + save(entity: Consecuencia): Consecuencia
+    }
+
+    interface RecomendacionRepository {
+        + findAll(): List
+        + findById(id: Long): Optional
+        + save(entity: Recomendacion): Recomendacion
+    }
+
+    interface MemeRepository {
+        + findAll(): List
+        + findById(id: Long): Optional
+        + save(entity: Meme): Meme
+    }
+
+    interface LeyRepository {
+        + findAll(): List
+        + findById(id: Long): Optional
+        + save(entity: Ley): Ley
+    }
+}
+
+package "com.accenture.excusas.service" {
+    class ExcusaService {
+        - contextoRepository: ContextoRepository
+        - causaRepository: CausaRepository
+        - consecuenciaRepository: ConsecuenciaRepository
+        - recomendacionRepository: RecomendacionRepository
+        - memeRepository: MemeRepository
+        - leyRepository: LeyRepository
+        + generarExcusaSimple(): ExcusaResponseDTO
+        + generarExcusaConMeme(): ExcusaResponseDTO
+        + generarExcusaConLey(): ExcusaResponseDTO
+        + generarExcusaUltraShark(): ExcusaResponseDTO
+        + generarExcusaPorRol(rol: String): ExcusaResponseDTO
+        + crearContexto(dto: ContextoRequestDTO): ContextoResponseDTO
+        + crearCausa(dto: CausaRequestDTO): CausaResponseDTO
+        + crearConsecuencia(dto: ConsecuenciaRequestDTO): ConsecuenciaResponseDTO
+        + crearRecomendacion(dto: RecomendacionRequestDTO): RecomendacionResponseDTO
+        + crearMeme(dto: MemeRequestDTO): MemeResponseDTO
+        + crearLey(dto: LeyRequestDTO): LeyResponseDTO
+        - construirExcusa(conMeme: boolean, conLey: boolean, rol: String): ExcusaResponseDTO
+        - obtenerFragmento(total: long, rol: String, tipo: String): String
+    }
+}
+
+package "com.accenture.excusas.service.mapper" {
+    class ContextoMapper {
+        + toEntity(dto: ContextoRequestDTO): Contexto
+        + toResponse(entity: Contexto): ContextoResponseDTO
+    }
+
+    class CausaMapper {
+        + toEntity(dto: CausaRequestDTO): Causa
+        + toResponse(entity: Causa): CausaResponseDTO
+    }
+
+    class ConsecuenciaMapper {
+        + toEntity(dto: ConsecuenciaRequestDTO): Consecuencia
+        + toResponse(entity: Consecuencia): ConsecuenciaResponseDTO
+    }
+
+    class RecomendacionMapper {
+        + toEntity(dto: RecomendacionRequestDTO): Recomendacion
+        + toResponse(entity: Recomendacion): RecomendacionResponseDTO
+    }
+
+    class MemeMapper {
+        + toEntity(dto: MemeRequestDTO): Meme
+        + toResponse(entity: Meme): MemeResponseDTO
+    }
+
+    class LeyMapper {
+        + toEntity(dto: LeyRequestDTO): Ley
+        + toResponse(entity: Ley): LeyResponseDTO
+    }
+}
+
+package "com.accenture.excusas.config" {
+    class DataLoader {
+        - contextoRepository: ContextoRepository
+        - causaRepository: CausaRepository
+        - consecuenciaRepository: ConsecuenciaRepository
+        - recomendacionRepository: RecomendacionRepository
+        - memeRepository: MemeRepository
+        - leyRepository: LeyRepository
+        - objectMapper: ObjectMapper
+        + run(args: String[]): void
+        - cargarMemes(): void
+        - cargarLeyes(): void
+        - cargarContextos(): void
+    }
+
+    class AppConfig {
+        + objectMapper(): ObjectMapper
+    }
+
+    class SwaggerConfig {
+        + customOpenAPI(): OpenAPI
+    }
+}
+
+' Relationships
+ExcusaController --> ExcusaService: uses
+ContextoController --> ExcusaService: uses
+CausaController --> ExcusaService: uses
+ConsecuenciaController --> ExcusaService: uses
+RecomendacionController --> ExcusaService: uses
+MemeController --> ExcusaService: uses
+LeyController --> ExcusaService: uses
+
+ExcusaService --> ContextoRepository: uses
+ExcusaService --> CausaRepository: uses
+ExcusaService --> ConsecuenciaRepository: uses
+ExcusaService --> RecomendacionRepository: uses
+ExcusaService --> MemeRepository: uses
+ExcusaService --> LeyRepository: uses
+
+ExcusaService --> ContextoMapper: uses
+ExcusaService --> CausaMapper: uses
+ExcusaService --> ConsecuenciaMapper: uses
+ExcusaService --> RecomendacionMapper: uses
+ExcusaService --> MemeMapper: uses
+ExcusaService --> LeyMapper: uses
+
+ContextoMapper --> ContextoRequestDTO: transforms
+ContextoMapper --> Contexto: transforms
+ContextoMapper --> ContextoResponseDTO: produces
+
+CausaMapper --> CausaRequestDTO: transforms
+CausaMapper --> Causa: transforms
+CausaMapper --> CausaResponseDTO: produces
+
+ConsecuenciaMapper --> ConsecuenciaRequestDTO: transforms
+ConsecuenciaMapper --> Consecuencia: transforms
+ConsecuenciaMapper --> ConsecuenciaResponseDTO: produces
+
+RecomendacionMapper --> RecomendacionRequestDTO: transforms
+RecomendacionMapper --> Recomendacion: transforms
+RecomendacionMapper --> RecomendacionResponseDTO: produces
+
+MemeMapper --> MemeRequestDTO: transforms
+MemeMapper --> Meme: transforms
+MemeMapper --> MemeResponseDTO: produces
+
+LeyMapper --> LeyRequestDTO: transforms
+LeyMapper --> Ley: transforms
+LeyMapper --> LeyResponseDTO: produces
+
+ExcusaController --> ExcusaResponseDTO: returns
+ContextoController --> ContextoResponseDTO: returns
+CausaController --> CausaResponseDTO: returns
+ConsecuenciaController --> ConsecuenciaResponseDTO: returns
+RecomendacionController --> RecomendacionResponseDTO: returns
+MemeController --> MemeResponseDTO: returns
+LeyController --> LeyResponseDTO: returns
+
+ContextoRepository --> Contexto: manages
+CausaRepository --> Causa: manages
+ConsecuenciaRepository --> Consecuencia: manages
+RecomendacionRepository --> Recomendacion: manages
+MemeRepository --> Meme: manages
+LeyRepository --> Ley: manages
+
+DataLoader --> ContextoRepository: uses
+DataLoader --> CausaRepository: uses
+DataLoader --> ConsecuenciaRepository: uses
+DataLoader --> RecomendacionRepository: uses
+DataLoader --> MemeRepository: uses
+DataLoader --> LeyRepository: uses
+
+note right of ExcusaService
+  Generador principal de excusas
+  con 5 modos diferentes:
+  - SIMPLE
+  - CON_MEME
+  - CON_LEY
+  - ULTRA_SHARK
+  - POR_ROL
+end note
+
+@enduml

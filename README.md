@@ -123,6 +123,13 @@ Ver `.github/copilot-instructions.md` para:
 - Convenciones del proyecto
 - Guía para AI agents
 
+### Guías Adicionales
+- **DOCKER.md** - Containerización y ejecución con Docker
+- **QUICK_START.md** - Setup inicial y tests
+- **TEST_COVERAGE.md** - Cobertura de tests
+- **PROJECT_REVIEW.md** - Revisión completa del proyecto
+- **docs/uml/README.md** - Diagramas UML (PlantUML)
+
 ---
 
 ## 📦 Requisitos mínimos
@@ -166,15 +173,15 @@ Ver `.github/copilot-instructions.md` para:
 - Clean code 
 - Conventional commits  
 
-###  Level Shark 
-- 100 Coverage de test de unidad
-- SonarLint sin issues graves  
-- PlantUML Clases, deploy, componentes, sequencia  
+###  Level Shark ✅
+- ✅ 100% Coverage de test de unidad
+- ✅ SonarLint sin issues graves  
+- ✅ PlantUML Diagramas (Clases, Deploy, Componentes, Secuencia)
 
 ###  Level White Shark ✅
-- Arquitectura Hexagonal 
-- Docker (próximos pasos)
-- Test de integración (próximos pasos)
+- ✅ Arquitectura Hexagonal 
+- ✅ Docker (containerización completa)
+- ✅ Test de integración
 
 ###  Megalodon 
 - Usar AI para componer las excusas

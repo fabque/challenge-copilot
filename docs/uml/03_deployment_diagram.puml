@@ -1,0 +1,113 @@
+@startuml Excusas_Tech_API_Deployment
+!theme plain
+skinparam backgroundColor #F9F9F9
+skinparam nodeBackgroundColor #E1F5FF
+skinparam nodeBorderColor #01579B
+skinparam arrowColor #01579B
+skinparam componentBackgroundColor #B3E5FC
+skinparam componentBorderColor #01579B
+
+title Excusas Tech API - Deployment Diagram
+
+cloud "Internet" as internet
+
+node "Developer Machine / CI/CD" as devmachine {
+    component "Source Code" as sourcecode {
+        artifact "Java Sharks Challenge" as challenge
+    }
+    component "Maven Build" as mavenbuild {
+        artifact "pom.xml" as pomxml
+        artifact "mvn package" as mvnpkg
+    }
+}
+
+node "Docker Registry" as registry {
+    artifact "excusas-api:latest" as image
+    artifact "Dockerfile" as dockerfile
+}
+
+node "Production Environment" as production {
+    node "Docker Container 1" as container1 {
+        node "JVM" as jvm1 {
+            component "Spring Boot Application" as springapp1 {
+                artifact "excusas-api-1.0.0.jar" as jar1
+                artifact "application.properties" as props1
+            }
+        }
+    }
+    
+    node "Docker Container 2" as container2 {
+        node "JVM" as jvm2 {
+            component "Spring Boot Application" as springapp2 {
+                artifact "excusas-api-1.0.0.jar" as jar2
+                artifact "application.properties" as props2
+            }
+        }
+    }
+    
+    component "Docker Network" as network {
+        artifact "docker-compose.yml" as compose
+    }
+    
+    node "H2 Database" as h2db {
+        database "excusasdb (in-memory)" as db
+    }
+}
+
+node "Client Machines" as clients {
+    actor "Browser / Client" as browser
+    artifact "Swagger UI" as swagger
+    artifact "REST Client" as restclient
+}
+
+node "Load Balancer" as lb {
+    component "nginx / traefik" as balancer
+}
+
+internet -- browser: HTTP(S)
+internet -- restclient: HTTP(S)
+
+devmachine --> registry: push image
+registry --> production: pull image
+
+container1 -.-> container2: linked via docker-compose
+container1 --> network: uses
+container2 --> network: uses
+network --> compose: defines
+
+springapp1 --> db: uses H2
+springapp2 --> db: uses H2
+
+browser --> balancer: requests
+restclient --> balancer: requests
+
+balancer --> container1: routes traffic
+balancer --> container2: routes traffic (optional)
+
+note right of devmachine
+  Local development
+  or CI/CD pipeline:
+  - Git push
+  - Maven compile
+  - Tests run
+  - JAR build
+end note
+
+note right of production
+  Production deployment:
+  - Docker containers
+  - Port mapping: 8080
+  - Volume mounting (data)
+  - Health checks enabled
+  - Restart policy: always
+end note
+
+note right of clients
+  Access points:
+  - http://localhost:8080
+  - Swagger: /swagger-ui.html
+  - API: /api/excusas/*
+  - H2 Console: /h2-console
+end note
+
+@enduml

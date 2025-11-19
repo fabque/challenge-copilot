@@ -1,0 +1,117 @@
+@startuml Excusas_Tech_API_Sequence_UltraShark
+!theme plain
+skinparam backgroundColor #F9F9F9
+skinparam sequenceActorBackgroundColor #E1F5FF
+skinparam sequenceParticipantBackgroundColor #E1F5FF
+skinparam sequenceParticipantBorderColor #01579B
+skinparam arrowColor #01579B
+skinparam noteBorderColor #F57C00
+skinparam noteBackgroundColor #FFF9C4
+
+title Generar Excusa Ultra-Shark (Meme + Ley)
+
+actor Client
+participant ExcusaController
+participant ExcusaService
+participant ContextoRepository
+participant CausaRepository
+participant ConsecuenciaRepository
+participant RecomendacionRepository
+participant MemeRepository
+participant LeyRepository
+participant ContextoMapper
+participant ExcusaResponseDTO
+
+Client ->> ExcusaController: GET /api/excusas/ultra-shark
+activate ExcusaController
+
+ExcusaController ->> ExcusaService: generarExcusaUltraShark()
+activate ExcusaService
+
+ExcusaService ->> ExcusaService: construirExcusa(true, true, null)
+activate ExcusaService
+
+par Obtener Fragmentos en Paralelo
+    ExcusaService ->> ContextoRepository: count()
+    activate ContextoRepository
+    ContextoRepository -->> ExcusaService: Long
+    deactivate ContextoRepository
+    
+    ExcusaService ->> ContextoRepository: findById(randomId)
+    activate ContextoRepository
+    ContextoRepository -->> ExcusaService: Contexto entity
+    deactivate ContextoRepository
+    
+    ExcusaService ->> ContextoMapper: toResponse(contexto)
+    activate ContextoMapper
+    ContextoMapper -->> ExcusaService: ContextoResponseDTO
+    deactivate ContextoMapper
+end
+
+par Obtener Más Fragmentos
+    ExcusaService ->> CausaRepository: findById(randomId)
+    activate CausaRepository
+    CausaRepository -->> ExcusaService: Causa entity
+    deactivate CausaRepository
+    
+    ExcusaService ->> ConsecuenciaRepository: findById(randomId)
+    activate ConsecuenciaRepository
+    ConsecuenciaRepository -->> ExcusaService: Consecuencia entity
+    deactivate ConsecuenciaRepository
+    
+    ExcusaService ->> RecomendacionRepository: findById(randomId)
+    activate RecomendacionRepository
+    RecomendacionRepository -->> ExcusaService: Recomendacion entity
+    deactivate RecomendacionRepository
+end
+
+par Obtener Meme y Ley
+    ExcusaService ->> MemeRepository: count()
+    activate MemeRepository
+    MemeRepository -->> ExcusaService: Long
+    deactivate MemeRepository
+    
+    ExcusaService ->> MemeRepository: findById(randomId)
+    activate MemeRepository
+    MemeRepository -->> ExcusaService: Meme entity
+    deactivate MemeRepository
+    
+    ExcusaService ->> LeyRepository: count()
+    activate LeyRepository
+    LeyRepository -->> ExcusaService: Long
+    deactivate LeyRepository
+    
+    ExcusaService ->> LeyRepository: findById(randomId)
+    activate LeyRepository
+    LeyRepository -->> ExcusaService: Ley entity
+    deactivate LeyRepository
+end
+
+ExcusaService ->> ExcusaResponseDTO: construir respuesta completa
+activate ExcusaResponseDTO
+note right of ExcusaResponseDTO
+  Construir ExcusaResponseDTO con:
+  - contexto: String
+  - causa: String
+  - consecuencia: String
+  - recomendacion: String
+  - meme: String (INCLUIDO)
+  - ley: String (INCLUIDO)
+  - fuente: String (fuente de ley)
+  - timestamp: Long (System.currentTimeMillis())
+  - modo: "ULTRA_SHARK"
+end note
+ExcusaResponseDTO -->> ExcusaService: ExcusaResponseDTO completo
+deactivate ExcusaResponseDTO
+
+deactivate ExcusaService
+
+ExcusaService -->> ExcusaController: ExcusaResponseDTO
+deactivate ExcusaService
+
+ExcusaController -->> Client: ResponseEntity(200, ExcusaResponseDTO)
+deactivate ExcusaController
+
+Client ->> Client: Mostrar respuesta JSON
+
+@enduml
