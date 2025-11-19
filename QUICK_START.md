@@ -169,11 +169,35 @@ mvn test -Dtest=ExcusaControllerIntegrationTest
 - ✅ HTTP Status codes (200, 201, 400, 404)
 - ✅ Body assertions con JSONPath
 
+## 📚 Swagger/OpenAPI Documentation
+
+Se ha agregado documentación automática de la API con Swagger 3 / OpenAPI 3:
+
+### Acceder a la Documentación
+- **Swagger UI**: http://localhost:8080/swagger-ui.html
+- **OpenAPI JSON**: http://localhost:8080/v3/api-docs
+- **OpenAPI YAML**: http://localhost:8080/v3/api-docs.yaml
+
+### Features Incluidos
+- ✅ Descripción de todos los endpoints
+- ✅ Parámetros documentados (path, query, body)
+- ✅ Schemas de Request/Response
+- ✅ HTTP Status Codes (200, 201, 400, 404)
+- ✅ Tags por grupo de endpoints (Excusas, Fragmentos)
+- ✅ Interfaz interactiva para probar endpoints
+
+### Ejemplo en Swagger UI
+Puedes hacer click en cualquier endpoint y ver:
+- **Description**: Qué hace el endpoint
+- **Try it out**: Botón para ejecutar la request
+- **Parameters**: Documentación de argumentos
+- **Responses**: Esquemas de respuesta posibles
+
 ## 🚦 Próximos Pasos (Opcionales)
 
 - [x] Agregar tests unitarios (JUnit 5 + Mockito) ✅
 - [x] Tests de integración (RestAssured) ✅
-- [ ] Swagger/OpenAPI documentation
+- [x] Swagger/OpenAPI documentation ✅
 - [ ] Docker container
 - [ ] PlantUML diagrams (clases, secuencia, deployment)
 - [ ] SonarQube análisis
