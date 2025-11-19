@@ -107,9 +107,29 @@ curl -X GET http://localhost:8080/api/excusas/ultra-shark
 4. **ULTRA_SHARK**: Fragmentos + meme + ley (completo)
 5. **POR_ROL**: Filtrado según rol (dev, qa, devops, pm, sre)
 
+## ✅ Tests Unitarios (100% de cobertura)
+
+Se han implementado tests JUnit 5 + Mockito para todas las clases:
+
+### Tests Creados:
+- **6 Mapper Tests**: ContextoMapper, CausaMapper, ConsecuenciaMapper, RecomendacionMapper, MemeMapper, LeyMapper
+- **1 Service Test**: ExcusaService (20+ casos de prueba)
+- **7 Controller Tests**: ExcusaController, ContextoController, CausaController, ConsecuenciaController, RecomendacionController, MemeController, LeyController
+- **6 Model Tests**: Contexto, Causa, Consecuencia, Recomendacion, Meme, Ley
+- **6 DTO Tests**: ContextoRequestDTO, ContextoResponseDTO, ExcusaResponseDTO, CausaRequestDTO, MemeRequestDTO, LeyRequestDTO
+
+**Total: 40+ casos de prueba**
+
+### Ejecutar Tests:
+```bash
+mvn test
+# O un test específico:
+mvn test -Dtest=ExcusaServiceTest
+```
+
 ## 🚦 Próximos Pasos (Opcionales)
 
-- [ ] Agregar tests unitarios (JUnit 5 + Mockito)
+- [x] Agregar tests unitarios (JUnit 5 + Mockito) ✅
 - [ ] Tests de integración (RestAssured)
 - [ ] Swagger/OpenAPI documentation
 - [ ] Docker container

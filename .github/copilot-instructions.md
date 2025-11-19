@@ -170,10 +170,47 @@ mvn clean package
 # Ejecutar
 mvn spring-boot:run
 
+# Ejecutar tests
+mvn test
+
+# Ejecutar test específico
+mvn test -Dtest=ExcusaServiceTest
+
 # H2 Console
 URL: http://localhost:8080/h2-console
 JDBC URL: jdbc:h2:mem:excusasdb
 User: sa | Password: (vacía)
+```
+
+## Testing
+
+### Estructura de Tests
+```
+src/test/java/com/accenture/excusas/
+├── service/mapper/  # 6 tests de Mappers
+├── service/         # 1 test de ExcusaService (20+ casos)
+├── controller/      # 7 tests de Controllers
+├── model/           # 6 tests de Entidades
+└── dto/             # 6 tests de DTOs
+```
+
+### Casos de Prueba Cubiertos
+- **Mappers**: Conversión Entity↔DTO, manejo de nulls
+- **Service**: Todos los modos (SIMPLE, CON_MEME, CON_LEY, ULTRA_SHARK), CRUD, datos faltantes
+- **Controllers**: HTTP status (201 Created, 200 OK), mock service calls
+- **Models**: Builder pattern, getters/setters, campos múltiples
+- **DTOs**: Constructor, builder, validaciones
+
+### Ejecución de Tests
+```bash
+# Todos los tests
+mvn test
+
+# Con cobertura
+mvn test jacoco:report
+
+# Solo tests de service
+mvn test -Dtest=*Service*
 ```
 
 ## Extensiones Comunes

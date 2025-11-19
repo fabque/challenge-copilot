@@ -1,4 +1,4 @@
-package com.accenture.excusas.service;
+package com.accenture.excusas.service.mapper;
 
 import com.accenture.excusas.dto.MemeRequestDTO;
 import com.accenture.excusas.dto.MemeResponseDTO;
