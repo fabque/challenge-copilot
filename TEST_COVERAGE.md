@@ -2,20 +2,25 @@
 
 ## Resumen General
 
-**40+ casos de prueba** cubriendo el **100% del código producción**
+**140+ casos de prueba** cubriendo el **100% del código producción**
 
-| Categoría | Archivos | Tests | Estado |
-|-----------|----------|-------|--------|
-| **Mappers** | 6 | 30 | ✅ |
-| **Services** | 1 | 20 | ✅ |
-| **Controllers** | 7 | 25 | ✅ |
-| **Models** | 6 | 18 | ✅ |
-| **DTOs** | 6 | 20 | ✅ |
-| **Total** | **26** | **113+** | ✅ |
+| Categoría | Archivos | Tests | Tipo | Estado |
+|-----------|----------|-------|------|--------|
+| **Mappers** | 6 | 30 | Unit | ✅ |
+| **Services** | 1 | 20 | Unit | ✅ |
+| **Controllers** | 7 | 25 | Unit | ✅ |
+| **Models** | 6 | 18 | Unit | ✅ |
+| **DTOs** | 6 | 20 | Unit | ✅ |
+| **ExcusaAPI** | 1 | 10 | Integration | ✅ |
+| **CRUD API** | 1 | 10 | Integration | ✅ |
+| **Endpoints API** | 1 | 10 | Integration | ✅ |
+| **Total** | **29** | **143+** | Mixed | ✅ |
 
 ---
 
 ## 📝 Detalle por Categoría
+
+### Tests Unitarios (113 casos)
 
 ### 1. Mapper Tests (6 archivos, 30 casos)
 
@@ -105,13 +110,55 @@
 - ✅ Modo CON_LEY
 - ✅ Constructor vacío
 
-**CausaRequestDTOTest, MemeRequestDTOTest, LeyRequestDTOTest** (3 tests cada)
+**LeyRequestDTOTest, MemeRequestDTOTest** (3 tests cada)
+
+---
+
+## 🧪 Tests de Integración (30 casos)
+
+### RestAssured Integration Tests
+
+**ExcusaControllerIntegrationTest** (10 tests)
+- ✅ GET `/api/excusas/simple` - Verifica estructura SIMPLE
+- ✅ GET `/api/excusas/con-meme` - Incluye meme, sin ley
+- ✅ GET `/api/excusas/con-ley` - Incluye ley, sin meme
+- ✅ GET `/api/excusas/ultra-shark` - Meme + Ley completo
+- ✅ GET `/api/excusas/por-rol/dev` - Filtrado por rol
+- ✅ GET `/api/excusas/por-rol/qa` - Filtrado por rol
+- ✅ GET `/api/excusas/por-rol/devops` - Filtrado por rol
+- ✅ GET `/api/excusas/por-rol/pm` - Filtrado por rol
+- ✅ Múltiples llamadas generan distintos valores
+- ✅ Validación de estructura completa de respuesta
+
+**FragmentoCRUDIntegrationTest** (10 tests)
+- ✅ POST `/api/fragmentos/contextos` - 201 Created
+- ✅ POST `/api/fragmentos/causas` - 201 Created
+- ✅ POST `/api/fragmentos/consecuencias` - 201 Created
+- ✅ POST `/api/fragmentos/recomendaciones` - 201 Created
+- ✅ POST `/api/fragmentos/memes` - 201 Created
+- ✅ POST `/api/fragmentos/leyes` - 201 Created
+- ✅ Validación error 400 sin campos requeridos
+- ✅ Validación error 400 en ley sin fuente
+- ✅ Permite crear con campos mínimos
+- ✅ Retorna JSON válido
+
+**APIEndpointsIntegrationTest** (10 tests)
+- ✅ 404 para endpoint inexistente
+- ✅ CORS habilitado
+- ✅ Content-Type JSON en todos los endpoints
+- ✅ Timestamp válido (> 0)
+- ✅ Modo válido (SIMPLE, CON_MEME, CON_LEY, ULTRA_SHARK)
+- ✅ Datos iniciales cargados automáticamente
+- ✅ Soporta múltiples roles (dev, qa, devops, pm, sre)
+- ✅ Respuestas consistentes
+- ✅ Create and use (crear fragmento y generar excusa)
+- ✅ HTTP status codes correctos (200, 201, 400, 404)
 
 ---
 
 ## 🚀 Ejecutar Tests
 
-### Todos los tests
+### Todos los tests (unitarios + integración)
 ```bash
 mvn test
 ```
@@ -127,8 +174,11 @@ mvn test -Dtest=ExcusaServiceTest
 # Solo controllers
 mvn test -Dtest=*ControllerTest
 
+# Solo tests de integración
+mvn test -Dtest=*IntegrationTest
+
 # Un test exacto
-mvn test -Dtest=ContextoMapperTest
+mvn test -Dtest=ExcusaControllerIntegrationTest
 ```
 
 ### Con reporte de cobertura
@@ -141,7 +191,22 @@ mvn clean test jacoco:report
 
 ## 📋 Checklist de Cobertura
 
-### Controllers
+### Integration Tests - Excusa Endpoints
+- ✅ GET /api/excusas/simple
+- ✅ GET /api/excusas/con-meme
+- ✅ GET /api/excusas/con-ley
+- ✅ GET /api/excusas/ultra-shark
+- ✅ GET /api/excusas/por-rol/{rol}
+
+### Integration Tests - CRUD Endpoints
+- ✅ POST /api/fragmentos/contextos
+- ✅ POST /api/fragmentos/causas
+- ✅ POST /api/fragmentos/consecuencias
+- ✅ POST /api/fragmentos/recomendaciones
+- ✅ POST /api/fragmentos/memes
+- ✅ POST /api/fragmentos/leyes
+
+### Unit Tests - Controllers
 - ✅ ExcusaController (7 endpoints)
 - ✅ ContextoController (1 endpoint)
 - ✅ CausaController (1 endpoint)

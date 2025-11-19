@@ -127,10 +127,52 @@ mvn test
 mvn test -Dtest=ExcusaServiceTest
 ```
 
+## ✅ Tests de Integración (RestAssured)
+
+Se han implementado **3 test classes de integración** con **30+ casos de prueba** usando RestAssured:
+
+### Test Classes:
+1. **ExcusaControllerIntegrationTest** - 10 tests para endpoints GET
+   - Tests de los 5 modos de excusas (simple, con-meme, con-ley, ultra-shark, por-rol)
+   - Validación de respuestas JSON
+   - Verificación de campos presentes/ausentes
+
+2. **FragmentoCRUDIntegrationTest** - 10 tests para endpoints POST (CRUD)
+   - Crear contextos, causas, consecuencias, recomendaciones, memes, leyes
+   - Validación de errores 400
+   - Tests con campos opcionales
+
+3. **APIEndpointsIntegrationTest** - 10 tests generales
+   - Endpoints inexistentes (404)
+   - CORS habilitado
+   - Content-Type JSON
+   - Carga de datos iniciales
+   - Múltiples roles
+
+### Ejecutar Tests de Integración:
+```bash
+# Todos los tests (unitarios + integración)
+mvn test
+
+# Solo tests de integración
+mvn test -Dtest=*IntegrationTest
+
+# Un test específico
+mvn test -Dtest=ExcusaControllerIntegrationTest
+```
+
+### Características de los Tests:
+- ✅ `@SpringBootTest` con puerto aleatorio
+- ✅ RestAssured para validaciones HTTP
+- ✅ Matchers Hamcrest para assertions
+- ✅ Content-Type JSON validation
+- ✅ HTTP Status codes (200, 201, 400, 404)
+- ✅ Body assertions con JSONPath
+
 ## 🚦 Próximos Pasos (Opcionales)
 
 - [x] Agregar tests unitarios (JUnit 5 + Mockito) ✅
-- [ ] Tests de integración (RestAssured)
+- [x] Tests de integración (RestAssured) ✅
 - [ ] Swagger/OpenAPI documentation
 - [ ] Docker container
 - [ ] PlantUML diagrams (clases, secuencia, deployment)
